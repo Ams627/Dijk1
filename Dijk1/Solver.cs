@@ -46,7 +46,7 @@ namespace Dijk1
                 entry.Value.Tentative = int.MaxValue;
             }
 
-            netlist[origin].Tentative = int.MaxValue;
+            netlist[origin].Tentative = 0;
 
             _visited.Clear();
 
@@ -58,7 +58,7 @@ namespace Dijk1
                 {
                     if (!_visited.Contains(node))
                     {
-                        var newTentative = edge + node.Tentative;
+                        var newTentative = currentNode.Tentative + edge;
                         if (newTentative < node.Tentative)
                         {
                             node.Tentative = newTentative;
@@ -72,10 +72,13 @@ namespace Dijk1
 
                 foreach (var entry in netlist)
                 {
-                    if (entry.Value.Tentative < smallest)
+                    if (!_visited.Contains(entry.Value))
                     {
-                        smallest = entry.Value.Tentative;
-                        lowestNode = entry.Value;
+                        if (entry.Value.Tentative < smallest)
+                        {
+                            smallest = entry.Value.Tentative;
+                            lowestNode = entry.Value;
+                        }
                     }
                 }
 
