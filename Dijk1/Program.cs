@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace Dijk1
 {
@@ -23,9 +24,13 @@ namespace Dijk1
                 var edgeList = new List<(string, string, int)>();
 
                 var linenumber = 1;
-                foreach (var line in File.ReadLines(filename))
+                foreach (var line in File.ReadLines(filename).Select(x=>x.Trim()))
                 {
-                    var tokens = line.Split(new [] {' ', '\t' });
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        continue;
+                    }
+                    var tokens = Regex.Split(line, @"[ \t]+");
                     if (tokens.Length != 3)
                     {
                         Console.Error.WriteLine($"at line {linenumber}: there must be three tokens");
@@ -40,6 +45,10 @@ namespace Dijk1
 
                     edgeList.Add((tokens[0], tokens[1], weight));
                 }
+
+                var solver = new Solver(edgeList);
+                solver.Solve("1", "5");
+                Console.WriteLine();
             }
             catch (Exception ex)
             {

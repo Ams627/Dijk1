@@ -1,0 +1,5 @@
+Look up node by name - so we need a dictionary<string, node>
+
+each node has a name, a tentative weight and a list of neighbour-relations.
+
+a neighbour-relation is a list of (Node, int weight) pairs.
